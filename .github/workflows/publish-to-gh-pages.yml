@@ -1,0 +1,40 @@
+name: Build and Publish to GitHub Pages from Main Branch
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-publish:
+    concurrency: ci-${{ github.ref }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          lfs: true
+
+      - name: Checkout lfs objects
+        run: |
+          git lfs checkout
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies via npm
+        run: npm ci
+
+      - name: Build site
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          npm run-script build
+
+      - name: Publish site
+        uses: JamesIves/github-pages-deploy-action@v4
+        if: success()
+        with:
+          folder: _site
+          clean: true
