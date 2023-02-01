@@ -1,0 +1,17 @@
+---
+title: "NIST Publishes Critical Software Definition"
+body: |-2
+  <blockquote>
+    To coordinate the <a data-entity-substitution="canonical" data-entity-type="node" data-entity-uuid="91f455d3-c7c5-45bf-b24a-ead6d135e4fb" href="/itl/executive-order-improving-nations-cybersecurity/critical-software-definition-explanatory" title="Critical Software - Definition &amp; Explanatory Material">definition</a> with its eventual application, NIST solicited <a data-entity-substitution="canonical" data-entity-type="node" data-entity-uuid="e1764b41-59dd-48a5-8d5f-61a3a2ea9439" href="/itl/executive-order-improving-nations-cybersecurity/workshop-and-call-position-papers" title="Workshop&nbsp;and Call for Position Papers">position papers</a> from the community, hosted a <a data-entity-substitution="canonical" data-entity-type="node" data-entity-uuid="e1764b41-59dd-48a5-8d5f-61a3a2ea9439" href="/itl/executive-order-improving-nations-cybersecurity/workshop-and-call-position-papers" title="Workshop&nbsp;and Call for Position Papers">virtual workshop</a> to gather input, and consulted with CISA, the Office of Management and Budget (OMB), the Office of the Director of National Intelligence (ODNI), and the National Security Agency (NSA) to develop the definition, the <a data-entity-substitution="canonical" data-entity-type="node" data-entity-uuid="8a8faca9-1f0e-4e68-a455-6945a16cf13b" href="/itl/executive-order-improving-nations-cybersecurity/critical-software-definition-background-approach" title="Critical Software Definition - Background &amp; Approach">concept of a phased implementation</a>, and a preliminary list of common categories of software that would fall within the scope for the initial phase. Additional guidance on applying this definition for implementing the EO will be forthcoming from CISA and OMB. NIST worked closely with CISA and OMB to ensure that the definition and recommendations are consistent with their plans.
+  </blockquote>
+
+links:
+  - href: https://www.nist.gov/itl/executive-order-improving-nations-cybersecurity/critical-software-definition
+    linkText: Critical Software Definition
+  - href: https://www.nist.gov/document/white-paper-critical-software-enhancing-security-software-supply-chain
+    linkText: Whitepaper
+
+categories:
+  - From NIST
+
+faicon: flask

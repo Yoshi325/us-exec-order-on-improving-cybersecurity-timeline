@@ -1,0 +1,19 @@
+---
+title: NIST Releases Draft of NIST SP 800-161, rev 1 for comment
+body: |-2
+  <blockquote>
+    More than ever, organizations are concerned about the risks associated with
+    products and services that may contain potentially malicious functionality,
+    are [...]
+  </blockquote>
+
+links:
+  - href: https://www.nist.gov/news-events/news/2021/05/nist-releases-draft-nist-sp-800-161-revision-1-comment-cyber-supply-chain
+    linkText: News Post
+  - href: https://www.nist.gov/news-events/news-updates/org/5641
+    linkText: News and Updates from the NIST Information Technology Laboratory
+
+categories:
+  - From NIST
+
+faicon: flask

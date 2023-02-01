@@ -1,0 +1,32 @@
+---
+title: Executive Order Issued
+body: |-2
+  <blockquote>
+    The President’s Executive Order (EO) 14028 on Improving the Nation’s
+    Cybersecurity  issued on May 12, 2021, charges multiple agencies – including
+    NIST – with enhancing cybersecurity through a variety of initiatives related
+    to the security and integrity of the software supply chain.
+  </blockquote>
+  <figcaption>
+    —NIST,
+    <cite>
+      <a href="https://www.nist.gov/itl/executive-order-14028-improving-nations-cybersecurity">
+        EXECUTIVE ORDER 14028, IMPROVING THE NATION’S CYBERSECURITY
+      </a>
+    </cite>
+  </figcaption>
+
+links:
+  - href: https://www.federalregister.gov/documents/2021/05/17/2021-10460/improving-the-nations-cybersecurity
+    linkText: Executive Order
+    extraText: " (at National Archives Federal Register)"
+  - href: https://www.whitehouse.gov/briefing-room/presidential-actions/2021/05/12/executive-order-on-improving-the-nations-cybersecurity/
+    linkText: Executive Order
+    extraText: " (from The White House Briefing Room, Presidential Actions)"
+  - href: https://www.whitehouse.gov/briefing-room/statements-releases/2021/05/12/fact-sheet-president-signs-executive-order-charting-new-course-to-improve-the-nations-cybersecurity-and-protect-federal-government-networks/
+    linkText: Fact Sheet
+    extraText: " (from The White House Briefing Room, Statements and Releases)"
+
+faicon: landmark
+categories:
+  - From the White House

@@ -11,8 +11,7 @@
         <% } %> <%- content.header %> <% if (!utilities.isWrappedInParagraphTags(content.header)) {
         %>
       </p>
-
-      <p><% } %></p>
+      <% } %>
     </header>
 
     <% } %>
@@ -27,7 +26,7 @@
             <% content.filters.forEach(function(filter){ %>
             <li>
               <input type="checkbox" name="filter" id="<%= filter %>" checked />
-              <label for="<%= filter %>"><%- utilities.sentenceCase(filter) %> </label>
+              <label for="<%= filter %>"><%- filter %> </label>
             </li>
             <% }); %>
           </ul>
@@ -55,6 +54,9 @@
               <a id="<%= entry.id %>" href="#<%= entry.id %>"><i class="fas fa-link"></i></a><%-
               entry.title %>
             </h2>
+            <% if (entry.subtitle) { %>
+            <h3> <%- entry.subtitle %> </h3>
+            <% } %>
             <% if (entry.image) { %>
             <div class="captioned-image image-right">
               <% if (entry.image.link) { %><a href="<%= entry.image.link %>"
@@ -79,6 +81,13 @@
               <% }) %>
             </ul>
             <% } %>
+            <div style="border-top: 1px solid white;">
+              <ul>
+                <% entry.categories.forEach(function (cata) { %>
+                <li><%- cata %></li>
+                <% }) %>
+              </ul>
+            </div>
           </div>
         </div>
         <% }); %>

@@ -1,0 +1,21 @@
+---
+dates:
+  2_g_i_complete: 0000-00-00
+  2_i_complete: 0000-00-00
+
+deadlines:
+  - date: 2_g_i_complete + 90 days
+    title: Deadline for Executive Order Sec. 2(g)(ii)
+    quote: |-2
+      Within 90 days of receipt of the recommendations described in subsection (g)(i) of this section, the FAR Council shall review the recommendations and publish for public comment proposed updates to the FAR.
+    cite:
+      href: https://www.federalregister.gov/d/2021-10460/p-26
+      text: Section 2(g)(ii)
+
+  - date: 2_i_complete + 60 days
+    title: Deadline for Executive Order Sec. 2(j)
+    quote: |-2
+      Within 60 days of receiving the recommended contract language developed pursuant to subsection (i) of this section, the FAR Council shall review the recommended contract language and publish for public comment proposed updates to the FAR.
+    cite:
+      href: https://www.federalregister.gov/d/2021-10460/p-30
+      text: Section 2(j)

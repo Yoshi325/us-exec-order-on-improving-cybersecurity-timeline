@@ -1,54 +1,145 @@
-const header = 'Welcome to this wonderful example timeline.';
-const footer = 'A footer goes here.';
+const fs = require('fs');
+const yaml = require('js-yaml');
+const crypto = require('crypto');
+const moment = require('moment');
+
+function defaultEntryCreator(fileName) {
+  let entryContent = fs.readFileSync(`${__dirname}/entries/${fileName}`);
+  let entryObject = {};
+  if ('' != entryContent) {
+    entryObject = yaml.load(entryContent);
+  }
+  if (!Object.prototype.hasOwnProperty.call(entryObject, 'id')) {
+    entryObject = {...entryObject, id: crypto.randomUUID().toString()};
+  }
+  if (!Object.prototype.hasOwnProperty.call(entryObject, 'date')) {
+    let entryDate = fileName.split(' ')[0];
+    entryObject = {...entryObject, date: entryDate};
+  }
+  return entryObject;
+}
+
+function lookupPath(obj, path) {
+  let current = obj;
+  path.split('.').forEach(function(p){ current = current[p]; });
+  return current;
+}
+
+function getReplacementValue(content, targetExpr) {
+  const targetPath =
+    (targetExpr.includes('||'))
+    ? targetExpr.split('||')[0]
+    : targetExpr
+  ;
+  const value = lookupPath(content, targetPath);
+  if (value) {
+    const valueCopy = JSON.parse(JSON.stringify(value));
+    return valueCopy;
+
+  } else if (targetExpr.includes('||')) {
+    const defaultValue = JSON.parse(targetExpr.split('||')[1]);
+    return defaultValue;
+
+  } else {
+    return undefined;
+
+  }
+}
+
+function applyTemplate(template, content) {
+  for (var i in template) {
+    if (template[i] && "object" == typeof template[i]) {
+      /* descend into child object */
+      applyTemplate(template[i], content);
+      continue
+    }
+
+    const matches = template[i].matchAll(/\${([^}]+)}/g);
+    let match = matches.next();
+    if ((match.done === true) && (match.value === undefined)) {
+      /* no matches, carry on */
+      continue
+    }
+
+    if (match.value[0] == template[i]) {
+      /* single exact match (replace the whole value) */
+      const value = getReplacementValue(content, match.value[1]);
+      if (value !== undefined) {
+        template[i] = value;
+      }
+      continue
+    }
+
+    while (match.done == false) {
+      /* multiple matches, handle like a templated string */
+      const value = getReplacementValue(content, match.value[1]);
+      if (value) {
+        template[i] = template[i].replace(match.value[0], value);
+      }
+      match = matches.next();
+    }
+
+  }
+  return template;
+}
+
+function eoRelativeDeadlineEntryCreator(fileName) {
+  let contentString = fs.readFileSync(`${__dirname}/entries/${fileName}`);
+  if ('' == contentString) {
+    return [];
+  } else {
+    const contentObject = yaml.load(contentString);
+    return [...contentObject.deadlines.map(
+      item => {
+        const template = JSON.parse(contentObject.template);
+        let entryObject = applyTemplate(template, item);
+        const dayMatch = /([0-9]+) days of the date of this order/.exec(item.quote);
+        if (dayMatch) {
+          entryObject['date'] = moment.utc("2021-05-12", "YYYYMMDD").add(Number.parseInt(dayMatch[1]), "days").format("YYYY-MM-DD");
+          entryObject.categories = [`EO+${dayMatch[1]}d`, ...entryObject.categories];
+        }
+        const yearMatch = /([0-9]+) years? of the date of this order/.exec(item.quote);
+        if (yearMatch) {
+          entryObject['date'] = moment.utc("2021-05-12", "YYYYMMDD").add(Number.parseInt(yearMatch[1]), "years").format("YYYY-MM-DD");
+          entryObject.categories = [`EO+${yearMatch[1]}y`, ...entryObject.categories];
+        }
+        entryObject.categories = ['Deadline', ...entryObject.categories];
+        return entryObject;
+      }
+    )]
+  }
+}
+
+const header = 'Timeline for the United States Executive Order on Improving the Nation’s Cybersecurity';
+const footer = 'A timeline of events related to EO 14028.';
+const entryFileProcessors = {
+  "eo-relative-deadlines.yaml": eoRelativeDeadlineEntryCreator,
+  "other-relative-deadlines.yaml": fileName => { return {}; }, // ToDo: create parser for other relative deadlines
+};
+const todayEntry = {date: moment.utc().format("YYYY-MM-DD"), title: "We are here.", body: "Current Date. <br/> (or atleast the date this was last updated)", categories: []};
 const entries = [
-  {
-    id: 'cat',
-    categories: ['cat'],
-    color: 'green',
-    faicon: 'cat',
-    datetime: '2021-01-01 05:00',
-    title: 'Cats are very good',
-    image: {
-      link: 'http://placekitten.com',
-      src: 'http://placekitten.com/200/300',
-      alt: 'A placeholder kitten',
-      caption: 'Kitten!',
-    },
-    body: "The best thing in the universe is a cardboard box. Chirp at birds catasstrophe for meowwww for hiding behind the couch until lured out by a feathery toy for morning beauty routine of licking self sugar, my siamese, stalks me (in a good way), day and night lick the other cats. Pushed the mug off the table shove bum in owner's face like camera lens or tickle my belly at your own peril i will pester for food when you're in the kitchen even if it's salad and grass smells good, licks your face, but hiiiiiiiiii feed me now.",
-    links: [
-      {
-        href: 'https://en.wikipedia.org/wiki/Cat',
-        linkText: 'Cat',
-      },
-    ],
-  },
-  {
-    id: 'dog',
-    categories: ['dog'],
-    color: 'green',
-    faicon: 'dog',
-    datetime: '2021-05-01 23:55',
-    title: 'Puppies are great too',
-    image: {
-      link: 'http://place-puppy.com',
-      src: 'https://place-puppy.com/300x300',
-      alt: 'A placeholder puppy',
-      caption: 'Puppy!',
-    },
-    body: 'Doggo ipsum sub woofer smol wow very biscit aqua doggo pupper dat tungg tho big ol pupper, very jealous pupper mlem heckin angery woofer very jealous pupper. Blep waggy wags long doggo, corgo. Tungg wow such tempt mlem very jealous pupper boofers lotsa pats, snoot smol big ol ruff doge super chub, long doggo heckin good boys and girls h*ck heck. Shoober blop many pats borkf, such treat. Big ol what a nice floof long water shoob wrinkler heck sub woofer, pupper porgo wow very biscit.',
-    links: [
-      {
-        href: 'https://en.wikipedia.org/wiki/Dog',
-        linkText: 'Dog',
-      },
-    ],
-  },
-];
+  todayEntry, ... fs.readdirSync(`${__dirname}/entries/`).map(
+    /* lookup the hander, or use default */
+    fileName => (entryFileProcessors[fileName] || defaultEntryCreator)(fileName)
+  ).flat(
+    1
+  ).filter(
+    /* discard entries without titles (also workaround for empty files) */
+    entryObject => Object.prototype.hasOwnProperty.call(entryObject, 'title')
+  )
+].sort(
+  (a, b) => {
+    const a_date = a.date.split('T')[0].split('-').join('');
+    const b_date = b.date.split('T')[0].split('-').join('');
+    const result = a_date > b_date ? 1 : a_date < b_date ? -1 : 0;
+    return result;
+  }
+);
 
 // Page details
-const pageTitle = 'Static timeline generator'; // The title of the page that shows in the browser tab
-const pageDescription = 'A super fancy timeline'; // The description of the page for search engines
-const pageAuthor = 'Jane Doe'; // Your name
+const pageTitle = 'EO 14028 Timeline'; // The title of the page that shows in the browser tab
+const pageDescription = 'Timeline for the United States Executive Order on Improving the Nation’s Cybersecurity (EO 14028).'; // The description of the page for search engines
+const pageAuthor = 'Charles L. Yost'; // Your name
 
 // DON'T EDIT BELOW THIS LINE! --------------------------------------------------------------------
 const getFilters = (entries) => {
